@@ -1,0 +1,125 @@
+.auth-container {
+  min-height: 100vh;
+  background: #0d0d0d;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* BOX */
+.auth-box {
+  background: #111;
+  padding: 30px;
+  border-radius: 10px;
+  width: 320px;
+  border: 1px solid #222;
+}
+
+/* TABS */
+.auth-tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.auth-tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: #d4af37;
+  border-bottom: 2px solid transparent;
+}
+
+.auth-tabs button.active {
+  border-bottom: 2px solid #d4af37;
+  font-weight: bold;
+}
+
+/* FORM */
+.auth-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-box input {
+  padding: 10px;
+  border: 1px solid #333;
+  background: #000;
+  color: white;
+}
+
+.auth-box input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ERROR */
+.error {
+  color: #ff4d4d;
+  font-size: 12px;
+}
+
+.error-message {
+  background: rgba(255, 77, 77, 0.1);
+  color: #ff6b6b;
+  padding: 10px;
+  border: 1px solid #ff4d4d;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* SUCCESS */
+.success {
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+  padding: 10px;
+  border: 1px solid #d4af37;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* PASSWORD STRENGTH */
+.password-strength {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.password-strength .valid {
+  color: #d4af37;
+}
+
+/* BUTTON */
+.submit-btn {
+  margin-top: 10px;
+  background: #d4af37;
+  color: black;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #e5c158;
+}
+
+.submit-btn:disabled {
+  background: #888;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.password-strength .valid {
+  color: #d4af37;
+}
+.password-strength .invalid {
+  color: #ff4d4d;
+}
