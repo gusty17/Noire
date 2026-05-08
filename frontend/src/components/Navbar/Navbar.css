@@ -9,12 +9,15 @@
   top: 0;
   z-index: 100;
   border-bottom: 1px solid #d4af37;
+  overflow: hidden;
+
 }
 
 /* LEFT */
 .nav-left {
   display: flex;
-  gap: 25px;
+  gap: 20px;
+  flex-shrink: 0;
 }
 
 .nav-left button {
@@ -35,6 +38,9 @@
 
 /* CENTER */
 .nav-center {
+  flex: 1;
+  text-align: center;
+  min-width: 120px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -53,6 +59,10 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  flex-shrink: 1;
+}
+.nav-right > * {
+    flex-shrink: 0;
 }
 
 /* SEARCH */
@@ -62,6 +72,10 @@
   background: white;
   border-radius: 6px;
   overflow: hidden;
+  
+  max-width: 180px; /* 🔥 limit width */
+  width: 100%;
+  
 }
 
 .search-form input {
@@ -72,6 +86,8 @@
   background: white;
   color: black;
   font-family: 'Poppins', sans-serif;
+  width: 100%;
+  min-width: 0; /* 🔥 VERY IMPORTANT */  
 }
 
 .search-form input::placeholder {
@@ -274,4 +290,114 @@
 
 .signin-btn:hover {
   opacity: 0.8;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: #d4af37;
+  color: black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+/* Hide menu button on desktop */
+.menu-btn {
+  display: none;
+  font-size: 50px;
+  background: none;
+  border: none;
+  color: #d4af37;
+  cursor: pointer;
+}
+.mobile-menu {
+  position: fixed;   /* 🔥 CHANGE THIS */
+  top: 45px;
+  left: 0;
+  width: 100%;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 15px;
+  border-top: 1px solid #d4af37;
+  z-index: 9999;   
+}
+
+.mobile-menu button {
+  background: none;
+  border: none;
+  color: #d4af37;
+  font-size: 16px;
+  text-align: left;
+}
+
+/* ========================= */
+/* 📱 MOBILE RESPONSIVE */
+/* ========================= */
+@media (max-width: 900px) {
+  .navbar {
+    padding: 10px 20px;
+  }
+  .nav-left {
+    display: flex;
+    gap: 10px;
+  }
+  /* Center logo stays */
+  .nav-center h1 {
+    font-size: 18px;
+  }
+  /* Hide search */
+  .search-form {
+    display: none;
+  }
+
+  /* Hide desktop links */
+  .nav-left button:not(.menu-btn) {
+    display: none;
+  }
+
+  /* Show menu button */
+  .menu-btn {
+    display: block;
+  }
+
+  /* Keep right side on the right */
+  .nav-right {
+    margin-left: auto;
+    gap: 10px;
+  }
+  .signin-btn,
+  .logout-btn,
+  .admin-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
+/* ========================= */
+/* 📟 TABLET */
+/* ========================= */
+
+@media (max-width: 1024px) {
+  .nav-left {
+    gap: 15px;
+  }
+
+  .nav-left button {
+    font-size: 12px;
+  }
+
+  .search-form input {
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 900px) {
+  .search-form {
+    display: none;
+  }
 }

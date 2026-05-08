@@ -111,6 +111,17 @@
   color: #000;
 }
 
+.btn-danger {
+  background: transparent;
+  color: #ff4444;
+  border: 2px solid #ff4444;
+}
+
+.btn-danger:hover {
+  background: #ff4444;
+  color: #fff;
+}
+
 @media (max-width: 768px) {
   .product-details-container {
     grid-template-columns: 1fr;

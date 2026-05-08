@@ -43,5 +43,21 @@ namespace backend.Controllers
             var orders = await _service.GetUserOrdersAsync(userId);
             return Ok(orders);
         }
+
+        // GET: api/order/admin/all (Admin only - view all orders)
+        [HttpGet("admin/all")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            try
+            {
+                var orders = await _service.GetAllOrdersAsync();
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

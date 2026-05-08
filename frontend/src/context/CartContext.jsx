@@ -15,35 +15,91 @@ export function CartProvider({ children }) {
     }
 
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const existing = prev.find(
+        (item) => item.id === product.id
+      );
 
+      //Increase quantity if exists
       if (existing) {
         return prev.map((item) =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? {
+                ...item,
+                quantity: item.quantity + 1,
+              }
             : item
         );
       }
 
-      return [...prev, { ...product, quantity: 1 }];
+      //  Add new product
+      return [
+        ...prev,
+        {
+          ...product,
+          quantity: 1,
+        },
+      ];
     });
+
     return true;
   };
 
-  // ❌ Remove item
+  //  Remove item completely
   const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+    setCart((prev) =>
+      prev.filter((item) => item.id !== id)
+    );
   };
 
-  // 🔢 Total price
+  // ➖ Decrease quantity
+  const decreaseQuantity = (id) => {
+    setCart((prev) =>
+      prev
+        .map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                quantity: item.quantity - 1,
+              }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
+
+  // Clear cart
+  const clearCart = () => {
+    setCart([]);
+  };
+
+  // Total price
   const total = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) =>
+      sum + item.price * item.quantity,
+    0
+  );
+
+  // Total quantity (for navbar badge)
+  const cartCount = cart.reduce(
+    (sum, item) => sum + item.quantity,
     0
   );
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, total }}
+      value={{
+        cart,
+        cartItems: cart,
+        cartCount,
+
+        addToCart,
+        removeFromCart,
+        decreaseQuantity,
+        clearCart,
+
+        total,
+        cartCount,
+      }}
     >
       {children}
     </CartContext.Provider>

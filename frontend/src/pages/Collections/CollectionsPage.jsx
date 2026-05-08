@@ -2,31 +2,41 @@ import "./CollectionsPage.css";
 import { useState, useEffect } from "react";
 
 import ProductCard from "../../components/ProductCard/ProductCard";
-import { getProducts } from "../../services/api";
+import { getProducts, getCollections } from "../../services/api";
 
 function CollectionsPage() {
+  const [collections, setCollections] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getProducts(); // Fetch all products without filter
-        setProducts(data);
+        const [collectionsData, productsData] = await Promise.all([
+          getCollections(),
+          getProducts(),
+        ]);
+        setCollections(collectionsData);
+        setProducts(productsData);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProducts();
+    fetchData();
   }, []);
+
+  // Group products by collection
+  const getProductsByCollection = (collectionId) => {
+    return products.filter((product) => product.collectionId === collectionId);
+  };
 
   if (loading) {
     return (
       <div className="collections-page">
-        <div className="loading">Loading products...</div>
+        <div className="loading">Loading collections...</div>
       </div>
     );
   }
@@ -38,17 +48,34 @@ function CollectionsPage() {
         <p>Discover our collections of luxury perfumes.</p>
       </header>
 
-      <section className="collections-featured">
-        {products.length > 0 ? (
-          products.map((product) => (
-            <ProductCard
-              key={product.id}
-              {...product}
-              onAddToCart={() => console.log("Added:", product)}
-            />
-          ))
+      <section className="collections-container">
+        {collections.length > 0 ? (
+          collections.map((collection) => {
+            const collectionProducts = getProductsByCollection(collection.id);
+            return (
+              <div key={collection.id} className="collection-section">
+                <h2 className="collection-title">{collection.name}</h2>
+                {collection.description && (
+                  <p className="collection-description">{collection.description}</p>
+                )}
+                <div className="products-grid">
+                  {collectionProducts.length > 0 ? (
+                    collectionProducts.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        {...product}
+                        onAddToCart={() => console.log("Added:", product)}
+                      />
+                    ))
+                  ) : (
+                    <p className="no-products">No products in this collection.</p>
+                  )}
+                </div>
+              </div>
+            );
+          })
         ) : (
-          <p>No products found.</p>
+          <p className="no-collections">No collections available.</p>
         )}
       </section>
     </main>

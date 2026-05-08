@@ -1,20 +1,43 @@
 import "./Products.css";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import { getProducts } from "../../services/api";
+import { getProducts, searchProducts } from "../../services/api";
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [searchParams] = useSearchParams();
+
+  // Initialize search from URL params
+  useEffect(() => {
+    const urlSearch = searchParams.get("search");
+    if (urlSearch) {
+      setSearchQuery(urlSearch);
+    }
+  }, [searchParams]);
+
+  // Debounce search query - only search after user stops typing for 500ms
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const data = await getProducts(searchQuery);
+        const data = debouncedQuery 
+          ? await searchProducts(debouncedQuery)
+          : await getProducts();
         setProducts(Array.isArray(data) ? data : []);
+        setError(null);
       } catch (err) {
         console.error("Error fetching products:", err);
         setError("Failed to load products");
@@ -25,7 +48,7 @@ function Products() {
     };
 
     fetchProducts();
-  }, [searchQuery]);
+  }, [debouncedQuery]);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);

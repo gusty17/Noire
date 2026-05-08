@@ -12,7 +12,10 @@ namespace backend.DTOs.Product
 
         public string? ImageUrl { get; set; }
 
+        public int BrandId { get; set; }
         public string? BrandName { get; set; }
+        
+        public int CollectionId { get; set; }
         public string? CollectionName { get; set; }
     }
 }

@@ -32,6 +32,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(120px, 1fr));
   gap: 15px;
+  margin-left: 8%;
 }
 
 .brand-card {

@@ -1,115 +1,114 @@
-import "./Navbar.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaSearch, FaUser, FaCog } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
+import { FaShoppingCart, FaSearch, FaUser, FaCog } from "react-icons/fa";
+import "./Navbar.css";
 
 function Navbar() {
-  const [query, setQuery] = useState("");
   const navigate = useNavigate();
-  const { cart } = useCart();
-  const { isLoggedIn, isAdmin, user, logout } = useAuth();
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const { cartItems , cartCount } = useCart();
+  const { isLoggedIn , isAdmin} = useAuth();
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-
-    navigate(`/search?query=${query.trim()}`);
-    setQuery("");
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
 
   const handleLogout = () => {
-    setShowLogoutConfirm(true);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userName");
+    window.location.reload();
   };
 
-  const confirmLogout = () => {
-    logout();
-    setShowLogoutConfirm(false);
-    navigate("/");
-  };
-
-  const cancelLogout = () => {
-    setShowLogoutConfirm(false);
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchInput.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchInput)}`);
+      setSearchInput("");
+    }
   };
 
   return (
     <nav className="navbar">
       {/* LEFT */}
       <div className="nav-left">
-        <button onClick={() => navigate("/")}>Home</button>
-        <button onClick={() => navigate("/products")}>Products</button>
-        <button onClick={() => navigate("/collections")}>Collections</button>
-        <button onClick={() => navigate("/new-arrivals")}>New Arrivals</button>
+         <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
+            ☰
+          </button>
+        <button onClick={() => navigate("/")}>HOME</button>
+        <button onClick={() => navigate("/products")}>PRODUCTS</button>
+        <button onClick={() => navigate("/collections")}>COLLECTIONS</button>
+        <button onClick={() => navigate("/brands")}>BRANDS</button>
       </div>
 
       {/* CENTER */}
-      <div className="nav-center">
-        <h1 onClick={() => navigate("/")}>NOIRE</h1>
+      <div className="nav-center" onClick={() => navigate("/")}>
+        <h1>NOIRE</h1>
       </div>
 
       {/* RIGHT */}
       <div className="nav-right">
-        <form className="search-form" onSubmit={handleSearch}>
+
+
+        {/* SEARCH */}
+        <form className="search-form" onSubmit={handleSearchSubmit}>
           <input
             type="text"
-            placeholder="Search products..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
           />
-          <button type="submit" className="search-btn">
-            <FaSearch />
-          </button>
+          <button type="submit">🔍</button>
         </form>
 
-        <div className="cart-icon-container">
-          <FaShoppingCart
-            className="icon"
-            onClick={() => navigate("/cart")}
-          />
-          {cart.length > 0 && (
-            <span className="cart-badge" onClick={() => navigate("/cart")}>
-              {cart.length}
-            </span>
+        {/* CART */}
+        <div
+          className="cart-icon-container"
+          onClick={() => navigate("/cart")}
+        >
+          <span className="icon">🛒</span>
+          {cartCount  > 0 && (
+            <span className="cart-badge">{cartCount}</span>
           )}
         </div>
-
+        
         {isAdmin && (
           <button className="admin-btn" onClick={() => navigate("/admin")}>
             <FaCog /> Admin
           </button>
         )}
 
+        {/*  AUTH BUTTON  */}
         {isLoggedIn ? (
-          <>
-            <span className="user-name">{user?.fullName}</span>
-            <button className="logout-btn" onClick={handleLogout}>
-              Logout
-            </button>
-          </>
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
         ) : (
-          <button className="signin-btn" onClick={() => navigate("/login")}>
-            <FaUser /> Sign In
+          <button
+            className="signin-btn"
+            onClick={() => navigate("/login")}
+          >
+            Sign In
           </button>
         )}
+
       </div>
 
-      {/* Logout Confirmation Modal */}
-      {showLogoutConfirm && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>Confirm Logout</h3>
-            <p>Are you sure you want to logout?</p>
-            <div className="modal-buttons">
-              <button className="modal-btn confirm" onClick={confirmLogout}>
-                Yes, Logout
-              </button>
-              <button className="modal-btn cancel" onClick={cancelLogout}>
-                Cancel
-              </button>
-            </div>
-          </div>
+      {/* MOBILE MENU */}
+      {menuOpen && (
+        <div className="mobile-menu">
+          <button onClick={() => navigate("/")}>Home</button>
+          <button onClick={() => navigate("/collections")}>
+            Collections
+          </button>
+          <button onClick={() => navigate("/brands")}>Brands</button>
+
+          {isLoggedIn ? (
+            <button onClick={handleLogout}>Logout</button>
+          ) : (
+            <button onClick={() => navigate("/login")}>
+              Sign In
+            </button>
+          )}
         </div>
       )}
     </nav>

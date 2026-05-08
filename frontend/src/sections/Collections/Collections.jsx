@@ -1,10 +1,11 @@
 import "./Collections.css";
 import { useState, useEffect } from "react";
 import { getCollections } from "../../services/api";
-
+import { useNavigate } from "react-router-dom";
 function Collections() {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCollections = async () => {
@@ -24,6 +25,9 @@ function Collections() {
   if (loading) {
     return <div className="collections"><p>Loading collections...</p></div>;
   }
+  const handleCollectionClick = (collectionId) => {
+    navigate(`/collections`);
+  };
 
   return (
     <section className="collections">
@@ -38,6 +42,7 @@ function Collections() {
             <button
               key={item.id}
               className="collection-card"
+              onClick={() => handleCollectionClick(item.id)}
             >
               <span className="collection-name">{item.name}</span>
               <span className="collection-subtext">

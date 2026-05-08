@@ -70,6 +70,13 @@ export const getProducts = async () => {
   return response.data;
 };
 
+export const searchProducts = async (query) => {
+  const response = await apiClient.get("/product/search", {
+    params: { query },
+  });
+  return response.data;
+};
+
 export const getProductById = async (id) => {
   const response = await apiClient.get(`/product/${id}`);
   return response.data;
@@ -111,6 +118,11 @@ export const createOrder = async () => {
 
 export const getOrders = async () => {
   const response = await apiClient.get("/order");
+  return response.data;
+};
+
+export const getAllOrders = async () => {
+  const response = await apiClient.get("/order/admin/all");
   return response.data;
 };
 

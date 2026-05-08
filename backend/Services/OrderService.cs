@@ -38,12 +38,19 @@ namespace backend.Services
                 var orderItem = new OrderItem
                 {
                     ProductId = item.ProductId,
-                    ProductName = item.Product.Name,
-                    Price = item.Product.Price,
+                    ProductName = item.Product != null
+                        ? item.Product.Name
+                        : "",
+
+                    Price = item.Product != null
+                        ? item.Product.Price
+                        : 0,
+
                     Quantity = item.Quantity
                 };
 
-                total += item.Product.Price * item.Quantity;
+                total += orderItem.Price * item.Quantity;
+
                 order.Items.Add(orderItem);
             }
 
@@ -51,7 +58,7 @@ namespace backend.Services
 
             _context.Orders.Add(order);
 
-            // 🔥 Clear cart after checkout
+            // Clear cart after checkout
             _context.CartItems.RemoveRange(cart.Items);
 
             await _context.SaveChangesAsync();
@@ -59,9 +66,16 @@ namespace backend.Services
             return new OrderDto
             {
                 Id = order.Id,
+                UserId = order.UserId,
+
+                UserEmail = order.User != null
+                    ? order.User.Email
+                    : "",
+
                 TotalPrice = order.TotalPrice,
                 Status = order.Status,
                 CreatedAt = order.CreatedAt,
+
                 Items = order.Items.Select(i => new OrderItemDto
                 {
                     ProductName = i.ProductName,
@@ -76,12 +90,50 @@ namespace backend.Services
             return await _context.Orders
                 .Where(o => o.UserId == userId)
                 .Include(o => o.Items)
+                .Include(o => o.User)
                 .Select(o => new OrderDto
                 {
                     Id = o.Id,
+                    UserId = o.UserId,
+
+                    UserEmail = o.User != null
+                        ? o.User.Email
+                        : "",
+
                     TotalPrice = o.TotalPrice,
                     Status = o.Status,
                     CreatedAt = o.CreatedAt,
+
+                    Items = o.Items.Select(i => new OrderItemDto
+                    {
+                        ProductName = i.ProductName,
+                        Price = i.Price,
+                        Quantity = i.Quantity
+                    }).ToList()
+                })
+                .ToListAsync();
+        }
+
+        // Get all orders (Admin only)
+        public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
+        {
+            return await _context.Orders
+                .Include(o => o.Items)
+                .Include(o => o.User)
+                .OrderByDescending(o => o.CreatedAt)
+                .Select(o => new OrderDto
+                {
+                    Id = o.Id,
+                    UserId = o.UserId,
+
+                    UserEmail = o.User != null
+                        ? o.User.Email
+                        : "",
+
+                    TotalPrice = o.TotalPrice,
+                    Status = o.Status,
+                    CreatedAt = o.CreatedAt,
+
                     Items = o.Items.Select(i => new OrderItemDto
                     {
                         ProductName = i.ProductName,

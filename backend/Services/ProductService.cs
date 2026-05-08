@@ -33,7 +33,9 @@ namespace backend.Services
                     Price = p.Price,
                     Stock = p.Stock,
                     ImageUrl = p.ImageUrl ?? "",
+                    BrandId = p.BrandId,
                     BrandName = p.Brand != null ? p.Brand.Name : "",
+                    CollectionId = p.CollectionId,
                     CollectionName = p.Collection != null ? p.Collection.Name : "",
                 })
                 .ToListAsync();
@@ -56,7 +58,9 @@ namespace backend.Services
                 Price = p.Price,
                 Stock = p.Stock,
                 ImageUrl = p.ImageUrl ?? "",
+                BrandId = p.BrandId,
                 BrandName = p.Brand != null ? p.Brand.Name : "",
+                CollectionId = p.CollectionId,
                 CollectionName = p.Collection != null ? p.Collection.Name : ""
             };
         }
@@ -75,7 +79,9 @@ namespace backend.Services
                     Price = p.Price,
                     Stock = p.Stock,
                     ImageUrl = p.ImageUrl ?? "",
+                    BrandId = p.BrandId,
                     BrandName = p.Brand != null ? p.Brand.Name : "",
+                    CollectionId = p.CollectionId,
                     CollectionName = p.Collection != null ? p.Collection.Name : ""
                 })
                 .ToListAsync();
@@ -95,7 +101,38 @@ namespace backend.Services
                     Price = p.Price,
                     Stock = p.Stock,
                     ImageUrl = p.ImageUrl ?? "",
+                    BrandId = p.BrandId,
                     BrandName = p.Brand != null ? p.Brand.Name : "",
+                    CollectionId = p.CollectionId,
+                    CollectionName = p.Collection != null ? p.Collection.Name : ""
+                })
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ProductDto>> SearchAsync(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return await GetAllAsync();
+            }
+
+            var searchTerm = query.ToLower().Trim();
+
+            return await _context.Products
+                .Where(p => p.Name != null && p.Name.ToLower().Contains(searchTerm))
+                .Include(p => p.Brand)
+                .Include(p => p.Collection)
+                .Select(p => new ProductDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Stock = p.Stock,
+                    ImageUrl = p.ImageUrl ?? "",
+                    BrandId = p.BrandId,
+                    BrandName = p.Brand != null ? p.Brand.Name : "",
+                    CollectionId = p.CollectionId,
                     CollectionName = p.Collection != null ? p.Collection.Name : ""
                 })
                 .ToListAsync();

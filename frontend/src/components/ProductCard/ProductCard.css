@@ -57,6 +57,18 @@
   font-weight: 700;
 }
 
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.admin-actions button {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 1200px) {
   .product-card {
     width: 250px;

@@ -9,6 +9,7 @@ namespace backend.Interfaces
 
         Task<IEnumerable<ProductDto>> GetByBrandAsync(int brandId);
         Task<IEnumerable<ProductDto>> GetByCollectionAsync(int collectionId);
+        Task<IEnumerable<ProductDto>> SearchAsync(string query);
 
         Task<ProductDto> CreateAsync(CreateProductDto dto);
         Task<bool> UpdateAsync(int id, UpdateProductDto dto);

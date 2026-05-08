@@ -7,5 +7,7 @@ namespace backend.Interfaces
         Task<OrderDto> CreateOrderAsync(int userId);
 
         Task<IEnumerable<OrderDto>> GetUserOrdersAsync(int userId);
+
+        Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
     }
 }

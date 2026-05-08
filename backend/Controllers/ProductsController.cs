@@ -21,6 +21,12 @@ namespace backend.Controllers
             return Ok(await _service.GetAllAsync());
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string query)
+        {
+            return Ok(await _service.SearchAsync(query));
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

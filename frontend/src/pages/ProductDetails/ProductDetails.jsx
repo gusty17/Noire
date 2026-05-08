@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
-import { getProductById } from "../../services/api";
+import { getProductById, deleteProduct } from "../../services/api";
 import "./ProductDetails.css";
 
 function ProductDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addToCart } = useCart();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isAdmin } = useAuth();
+
+  const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -34,15 +37,33 @@ function ProductDetails() {
   if (error) return <p className="error">{error}</p>;
   if (!product) return <p className="error">Product not found.</p>;
 
-  const displayImage = product.imageUrl || "https://via.placeholder.com/400";
+  const displayImage = product.imageUrl
+    ? `${BASE_URL}${product.imageUrl}`
+    : "https://via.placeholder.com/400";
 
   const handleAddToCart = () => {
     addToCart({
       id: product.id,
       name: product.name,
       price: product.price,
-      imageUrl: displayImage,
+      image: displayImage,
     }, isLoggedIn);
+  };
+
+  const handleUpdate = () => {
+    navigate(`/admin?editProduct=${id}`);
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm(`Are you sure you want to delete "${product.name}"?`)) {
+      try {
+        await deleteProduct(id);
+        alert("Product deleted successfully!");
+        navigate("/");
+      } catch (err) {
+        alert("Error deleting product: " + (err.response?.data?.message || err.message));
+      }
+    }
   };
 
   return (
@@ -61,8 +82,17 @@ function ProductDetails() {
             {product.collection && <p><strong>Collection:</strong> {product.collection?.name || 'N/A'}</p>}
           </div>
           <div className="product-actions">
-            <button className="btn btn-primary" onClick={handleAddToCart}>Add to Cart</button>
-            <button className="btn btn-secondary">Add to Wishlist</button>
+            {isAdmin ? (
+              <>
+                <button className="btn btn-secondary" onClick={handleUpdate}>Update Product</button>
+                <button className="btn btn-danger" onClick={handleDelete}>Delete Product</button>
+              </>
+            ) : (
+              <>
+                <button className="btn btn-primary" onClick={handleAddToCart}>Add to Cart</button>
+                <button className="btn btn-secondary">Add to Wishlist</button>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
+import { deleteProduct, addToCart as addToBackendCart } from "../../services/api";
 import "./ProductCard.css";
 import Button from "../Button/Button";
 
-function ProductCard({ id, name, price, imageUrl, image }) {
+function ProductCard({ id, name, price, imageUrl, image, onProductDeleted }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isAdmin } = useAuth();
 
   const BASE_URL = "http://localhost:5000";
 
@@ -15,18 +16,52 @@ function ProductCard({ id, name, price, imageUrl, image }) {
     navigate(`/product/${id}`);
   };
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     e.stopPropagation();
 
-    addToCart(
-      {
-        id,
-        name,
-        price,
-        imageUrl: imageUrl || image,
-      },
-      isLoggedIn
-    );
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      // Add to frontend cart
+      addToCart(
+        {
+          id,
+          name,
+          price,
+          image: displayImage,
+        },
+        isLoggedIn
+      );
+
+      // Sync with backend
+      await addToBackendCart(id, 1);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      alert("Failed to add item to cart");
+    }
+  };
+
+  const handleUpdate = (e) => {
+    e.stopPropagation();
+    navigate(`/admin?editProduct=${id}`);
+  };
+
+  const handleDelete = async (e) => {
+    e.stopPropagation();
+    if (window.confirm(`Are you sure you want to delete "${name}"?`)) {
+      try {
+        await deleteProduct(id);
+        alert("Product deleted successfully!");
+        if (onProductDeleted) {
+          onProductDeleted(id);
+        }
+      } catch (error) {
+        alert("Error deleting product: " + (error.response?.data?.message || error.message));
+      }
+    }
   };
 
   // 🔥 FIXED IMAGE URL
@@ -46,9 +81,23 @@ function ProductCard({ id, name, price, imageUrl, image }) {
         </p>
       </div>
 
-      <Button variant="primary" onClick={handleAddToCart}>
-        Add to Cart
-      </Button>
+      {isAdmin ? (
+        <div className="admin-actions">
+          <Button variant="secondary" onClick={handleUpdate}>
+            Update
+          </Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Delete
+          </Button>
+        </div>
+      ) : (
+        <Button 
+          variant={isLoggedIn ? "primary" : "secondary"} 
+          onClick={handleAddToCart}
+        >
+          {isLoggedIn ? "Add to Cart" : "Sign in to Add"}
+        </Button>
+      )}
     </div>
   );
 }

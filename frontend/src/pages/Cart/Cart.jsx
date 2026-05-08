@@ -1,5 +1,6 @@
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { removeFromCart as removeFromBackendCart } from "../../services/api";
 import "./Cart.css";
 
 function Cart() {
@@ -7,7 +8,22 @@ function Cart() {
   const navigate = useNavigate();
 
   const handleContinueShopping = () => {
-    navigate("/collections");
+    navigate("/products");
+  };
+
+  const handleCheckout = () => {
+    navigate("/checkout");
+  };
+
+  const handleRemoveItem = async (itemId) => {
+    try {
+      // Remove from frontend cart
+      removeFromCart(itemId);
+      // Sync with backend
+      await removeFromBackendCart(itemId);
+    } catch (error) {
+      console.error("Error removing from cart:", error);
+    }
   };
 
   return (
@@ -27,7 +43,7 @@ function Cart() {
                 {cart.map((item) => (
                   <div key={item.id} className="cart-item">
                     <img
-                      src={item.image}
+                      src={item.image || "https://via.placeholder.com/100"}
                       alt={item.name}
                       className="cart-item-image"
                     />
@@ -37,7 +53,7 @@ function Cart() {
                       <p className="cart-item-quantity">Quantity: {item.quantity}</p>
                       <button
                         className="cart-item-remove"
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => handleRemoveItem(item.id)}
                       >
                         Remove
                       </button>
@@ -49,7 +65,7 @@ function Cart() {
               <div className="cart-summary">
                 <h2 className="cart-total">Total: ${total.toFixed(2)}</h2>
                 <div className="cart-actions">
-                  <button className="btn btn-primary">Checkout</button>
+                  <button className="btn btn-primary" onClick={handleCheckout}>Checkout</button>
                   <button className="btn btn-secondary" onClick={handleContinueShopping}>Continue Shopping</button>
                 </div>
               </div>
