@@ -82,6 +82,16 @@ export const getProductById = async (id) => {
   return response.data;
 };
 
+export const getProductsByBrand = async (brandId) => {
+  const response = await apiClient.get(`/product/brand/${brandId}`);
+  return response.data;
+};
+
+export const getProductsByCollection = async (collectionId) => {
+  const response = await apiClient.get(`/product/collection/${collectionId}`);
+  return response.data;
+};
+
 
 //  CART
 
@@ -200,6 +210,11 @@ export const updateProduct = async (id, formData) => {
 
 export const deleteProduct = async (id) => {
   await apiClient.delete(`/product/${id}`);
+};
+
+export const updateOrderStatus = async (orderId, status) => {
+  const response = await apiClient.put(`/order/${orderId}/status`, { status });
+  return response.data;
 };
 
 export default apiClient;

@@ -20,6 +20,8 @@ function Admin() {
   const [loadingData, setLoadingData] = useState(true);
   const [orders, setOrders] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(false);
+  const [updatingOrderStatus, setUpdatingOrderStatus] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   // Product form state
   const [productForm, setProductForm] = useState({
@@ -99,6 +101,37 @@ function Admin() {
     } finally {
       setLoadingOrders(false);
     }
+  };
+
+  const handleOrderStatusChange = async (orderId, newStatus) => {
+    try {
+      setUpdatingOrderStatus(orderId);
+      await api.updateOrderStatus(orderId, newStatus);
+
+      // Update the order status in the local state
+      setOrders(orders.map(order =>
+        order.id === orderId
+          ? { ...order, status: newStatus }
+          : order
+      ));
+
+      setSuccess("Order status updated successfully!");
+      setTimeout(() => setSuccess(""), 3000);
+    } catch (err) {
+      console.error("Error updating order status:", err);
+      setError("Failed to update order status");
+      setTimeout(() => setError(""), 3000);
+    } finally {
+      setUpdatingOrderStatus(null);
+    }
+  };
+
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+  };
+
+  const closeOrderDetails = () => {
+    setSelectedOrder(null);
   };
 
   // Fetch product data for editing
@@ -603,12 +636,20 @@ function Admin() {
                       <th>Status</th>
                       <th>Created At</th>
                       <th>Items</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {orders.map((order) => (
                       <tr key={order.id}>
-                        <td>#{order.id}</td>
+                        <td>
+                          <button
+                            className="order-id-link"
+                            onClick={() => handleOrderClick(order)}
+                          >
+                            #{order.id}
+                          </button>
+                        </td>
                         <td>{order.userEmail}</td>
                         <td>${order.totalPrice.toFixed(2)}</td>
                         <td>
@@ -626,12 +667,67 @@ function Admin() {
                             ))}
                           </div>
                         </td>
+                        <td>
+                          <select
+                            value={order.status}
+                            onChange={(e) => handleOrderStatusChange(order.id, e.target.value)}
+                            disabled={updatingOrderStatus === order.id}
+                            className="status-select"
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                          </select>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
             )}
+          </div>
+        )}
+
+        {/* ORDER DETAILS MODAL */}
+        {selectedOrder && (
+          <div className="order-details-modal">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h3>Order Details - #{selectedOrder.id}</h3>
+                <button className="close-modal" onClick={closeOrderDetails}>×</button>
+              </div>
+
+              <div className="order-info">
+                <div className="info-section">
+                  <h4>Customer Information</h4>
+                  <p><strong>Email:</strong> {selectedOrder.userEmail}</p>
+                  <p><strong>Order Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
+                  <p><strong>Status:</strong>
+                    <span className={`status-badge status-${selectedOrder.status?.toLowerCase()}`}>
+                      {selectedOrder.status}
+                    </span>
+                  </p>
+                </div>
+
+                <div className="info-section">
+                  <h4>Order Summary</h4>
+                  <div className="order-items">
+                    {selectedOrder.items?.map((item, idx) => (
+                      <div key={idx} className="order-item">
+                        <div className="item-details">
+                          <span className="item-name">{item.productName}</span>
+                          <span className="item-quantity">Qty: {item.quantity}</span>
+                        </div>
+                        <span className="item-price">${item.price.toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="order-total">
+                    <strong>Total: ${selectedOrder.totalPrice.toFixed(2)}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

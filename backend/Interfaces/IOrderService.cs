@@ -9,5 +9,7 @@ namespace backend.Interfaces
         Task<IEnumerable<OrderDto>> GetUserOrdersAsync(int userId);
 
         Task<IEnumerable<OrderDto>> GetAllOrdersAsync();
+
+        Task<bool> UpdateOrderStatusAsync(int orderId, string status);
     }
 }

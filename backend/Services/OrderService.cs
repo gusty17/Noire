@@ -143,5 +143,17 @@ namespace backend.Services
                 })
                 .ToListAsync();
         }
+
+        // Update order status (Admin only)
+        public async Task<bool> UpdateOrderStatusAsync(int orderId, string status)
+        {
+            var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
+            if (order == null)
+                return false;
+
+            order.Status = status;
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

@@ -26,7 +26,7 @@ function Collections() {
     return <div className="collections"><p>Loading collections...</p></div>;
   }
   const handleCollectionClick = (collectionId) => {
-    navigate(`/collections`);
+    navigate(`/products?collectionId=${collectionId}`);
   };
 
   return (

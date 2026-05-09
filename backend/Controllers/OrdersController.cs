@@ -59,5 +59,29 @@ namespace backend.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        // PUT: api/order/{id}/status (Admin only - update order status)
+        [HttpPut("{id}/status")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] UpdateOrderStatusRequest request)
+        {
+            try
+            {
+                var result = await _service.UpdateOrderStatusAsync(id, request.Status);
+                if (!result)
+                    return NotFound(new { message = "Order not found" });
+
+                return Ok(new { message = "Order status updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+    }
+
+    public class UpdateOrderStatusRequest
+    {
+        public string Status { get; set; }
     }
 }

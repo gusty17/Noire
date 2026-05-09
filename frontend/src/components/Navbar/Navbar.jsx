@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
@@ -12,6 +12,23 @@ function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+
+  // Close mobile menu when screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    setMenuOpen(false); // Close mobile menu after navigation
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -96,16 +113,16 @@ function Navbar() {
       {/* MOBILE MENU */}
       {menuOpen && (
         <div className="mobile-menu">
-          <button onClick={() => navigate("/")}>Home</button>
-          <button onClick={() => navigate("/collections")}>
+          <button onClick={() => handleNavigation("/")}>Home</button>
+          <button onClick={() => handleNavigation("/collections")}>
             Collections
           </button>
-          <button onClick={() => navigate("/brands")}>Brands</button>
+          <button onClick={() => handleNavigation("/brands")}>Brands</button>
 
           {isLoggedIn ? (
             <button onClick={handleLogout}>Logout</button>
           ) : (
-            <button onClick={() => navigate("/login")}>
+            <button onClick={() => handleNavigation("/login")}>
               Sign In
             </button>
           )}

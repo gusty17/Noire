@@ -28,7 +28,7 @@ function Brands() {
   }
 
   const handleBrandClick = (brandId) => {
-    navigate(`/brands`);
+    navigate(`/products?brandId=${brandId}`);
   };
 
   return (
