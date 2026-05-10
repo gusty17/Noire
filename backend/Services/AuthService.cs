@@ -73,6 +73,28 @@ namespace backend.Services
             };
         }
 
+        public async Task<bool> UpdateUserAsync(int userId, UpdateUserDto dto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            
+            if (user == null)
+                return false;
+
+            if (!string.IsNullOrEmpty(dto.FullName))
+                user.FullName = dto.FullName;
+
+            if (!string.IsNullOrEmpty(dto.PhoneNumber))
+                user.PhoneNumber = dto.PhoneNumber;
+
+            if (!string.IsNullOrEmpty(dto.Address))
+                user.Address = dto.Address;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
         private string GenerateJwtToken(User user)
         {
             var claims = new[]

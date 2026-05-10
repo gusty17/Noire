@@ -6,5 +6,6 @@ namespace backend.Interfaces
     {
         Task<AuthResponseDto> RegisterAsync(RegisterDto dto);
         Task<AuthResponseDto?> LoginAsync(LoginDto dto);
+        Task<bool> UpdateUserAsync(int userId, UpdateUserDto dto);
     }
 }

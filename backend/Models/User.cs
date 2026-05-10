@@ -10,6 +10,9 @@ namespace backend.Models
 
         public string Role { get; set; } = "Customer";
 
+        public string? PhoneNumber { get; set; }
+        public string? Address { get; set; }
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public Cart? Cart { get; set; }

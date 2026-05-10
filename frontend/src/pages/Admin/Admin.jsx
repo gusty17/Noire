@@ -701,6 +701,8 @@ function Admin() {
                 <div className="info-section">
                   <h4>Customer Information</h4>
                   <p><strong>Email:</strong> {selectedOrder.userEmail}</p>
+                  <p><strong>Phone Number:</strong> {selectedOrder.phoneNumber || 'Not provided'}</p>
+                  <p><strong>Address:</strong> {selectedOrder.address || 'Not provided'}</p>
                   <p><strong>Order Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
                   <p><strong>Status:</strong>
                     <span className={`status-badge status-${selectedOrder.status?.toLowerCase()}`}>

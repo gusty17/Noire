@@ -71,6 +71,14 @@ namespace backend.Services
                 UserEmail = order.User != null
                     ? order.User.Email
                     : "",
+                
+                PhoneNumber = order.User != null
+                    ? order.User.PhoneNumber
+                    : "",
+                
+                Address = order.User != null
+                    ? order.User.Address
+                    : "",
 
                 TotalPrice = order.TotalPrice,
                 Status = order.Status,
@@ -98,6 +106,14 @@ namespace backend.Services
 
                     UserEmail = o.User != null
                         ? o.User.Email
+                        : "",
+                    
+                    PhoneNumber = o.User != null
+                        ? o.User.PhoneNumber
+                        : "",
+                    
+                    Address = o.User != null
+                        ? o.User.Address
                         : "",
 
                     TotalPrice = o.TotalPrice,
@@ -128,6 +144,14 @@ namespace backend.Services
 
                     UserEmail = o.User != null
                         ? o.User.Email
+                        : "",
+                    
+                    PhoneNumber = o.User != null
+                        ? o.User.PhoneNumber
+                        : "",
+                    
+                    Address = o.User != null
+                        ? o.User.Address
                         : "",
 
                     TotalPrice = o.TotalPrice,

@@ -58,6 +58,15 @@ export const register = async (fullName, email, password) => {
   return response.data;
 };
 
+export const updateUser = async (fullName, phoneNumber, address) => {
+  const response = await apiClient.put("/auth/profile", {
+    fullName,
+    phoneNumber,
+    address,
+  });
+  return response.data;
+};
+
 export const logout = () => {
   localStorage.removeItem("token");
 };

@@ -1,6 +1,8 @@
 using backend.DTOs.Auth;
 using backend.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace backend.Controllers
 {
@@ -38,6 +40,26 @@ namespace backend.Controllers
                 return Unauthorized("Invalid credentials");
 
             return Ok(result);
+        }
+
+        [HttpPut("profile")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUser(UpdateUserDto dto)
+        {
+            try
+            {
+                int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+                var result = await _service.UpdateUserAsync(userId, dto);
+
+                if (!result)
+                    return NotFound(new { message = "User not found" });
+
+                return Ok(new { message = "User updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

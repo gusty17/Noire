@@ -1,7 +1,7 @@
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { createOrder, addToCart as addToBackendCart, clearCart as clearBackendCart } from "../../services/api";
+import { createOrder, addToCart as addToBackendCart, clearCart as clearBackendCart, updateUser } from "../../services/api";
 import { useState, useEffect } from "react";
 import "./Checkout.css";
 import Button from "../../components/Button/Button";
@@ -64,6 +64,9 @@ function Checkout() {
     setError(null);
 
     try {
+      // 📝 Update user profile with phone and address
+      await updateUser(formData.fullName, formData.phone, formData.address);
+
       // 🧹 Clear backend cart first to avoid duplicates
       await clearBackendCart();
 
