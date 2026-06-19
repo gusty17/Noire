@@ -2,7 +2,8 @@ import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { createOrder, addToCart as addToBackendCart, clearCart as clearBackendCart, updateUser } from "../../services/api";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { EGYPT_CITIES, getShippingFee } from "../../constants/egyptCities";
 import "./Checkout.css";
 import Button from "../../components/Button/Button";
 
@@ -18,10 +19,13 @@ function Checkout() {
     email: user?.email || "",
     fullName: user?.fullName || "",
     address: "",
-    city: "",
+    city: EGYPT_CITIES[0],
     postalCode: "",
     phone: "",
   });
+
+  const shippingFee = getShippingFee(formData.city);
+  const orderTotal = total + shippingFee;
 
   // Redirect to login if not logged in
   if (!isLoggedIn) {
@@ -76,7 +80,7 @@ function Checkout() {
       }
 
       // ✅ Create order
-      await createOrder();
+      await createOrder(formData.city);
       setOrderPlaced(true);
       clearCart();
       
@@ -135,11 +139,11 @@ function Checkout() {
                   <div className="checkout-item-info">
                     <h4>{item.name}</h4>
                     <p>
-                      {item.quantity} x ${item.price.toFixed(2)}
+                      {item.quantity} x {item.price.toFixed(2)} LE
                     </p>
                   </div>
                   <div className="checkout-item-total">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    {(item.price * item.quantity).toFixed(2)} LE
                   </div>
                 </div>
               ))}
@@ -148,15 +152,15 @@ function Checkout() {
             <div className="order-totals">
               <div className="totals-row">
                 <span>Subtotal:</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{total.toFixed(2)} LE</span>
               </div>
               <div className="totals-row">
-                <span>Shipping:</span>
-                <span>Free</span>
+                <span>Shipping ({formData.city}):</span>
+                <span>{shippingFee.toFixed(2)} LE</span>
               </div>
               <div className="totals-row total">
                 <span>Total:</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{orderTotal.toFixed(2)} LE</span>
               </div>
             </div>
           </div>
@@ -221,15 +225,19 @@ function Checkout() {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="city">City *</label>
-                  <input
-                    type="text"
+                  <select
                     id="city"
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
                     required
-                    placeholder="Enter your city"
-                  />
+                  >
+                    {EGYPT_CITIES.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="form-group">
@@ -260,7 +268,7 @@ function Checkout() {
                   className="btn-place-order"
                   disabled={loading || syncing}
                 >
-                  {loading || syncing ? "Processing..." : `Place Order - $${total.toFixed(2)}`}
+                  {loading || syncing ? "Processing..." : `Place Order - ${orderTotal.toFixed(2)} LE`}
                 </button>
               </div>
             </form>

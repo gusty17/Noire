@@ -15,7 +15,10 @@ namespace backend.Services
             _context = context;
         }
 
-        public async Task<OrderDto> CreateOrderAsync(int userId)
+        private const decimal CairoShippingFee = 80m;
+        private const decimal OtherCitiesShippingFee = 120m;
+
+        public async Task<OrderDto> CreateOrderAsync(int userId, string? city)
         {
             var cart = await _context.Carts
                 .Include(c => c.Items)
@@ -54,7 +57,11 @@ namespace backend.Services
                 order.Items.Add(orderItem);
             }
 
-            order.TotalPrice = total;
+            var shippingFee = string.Equals(city, "Cairo", StringComparison.OrdinalIgnoreCase)
+                ? CairoShippingFee
+                : OtherCitiesShippingFee;
+
+            order.TotalPrice = total + shippingFee;
 
             _context.Orders.Add(order);
 

@@ -32,10 +32,17 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart(AddToCartDto dto)
         {
-            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            try
+            {
+                int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            await _service.AddToCartAsync(userId, dto);
-            return Ok(new { message = "Item added to cart" });
+                await _service.AddToCartAsync(userId, dto);
+                return Ok(new { message = "Item added to cart" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         // DELETE: api/cart/product/5

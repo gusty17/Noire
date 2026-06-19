@@ -12,7 +12,7 @@
 .collection-header h1 {
   margin: 0;
   font-size: 2.5rem;
-  color: #d4af37;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -33,11 +33,11 @@
 
 .collection-title {
   font-size: 2rem;
-  color: #d4af37;
+  color: #ffffff;
   margin: 0 0 0.5rem 0;
   font-weight: 600;
   padding-bottom: 10px;
-  border-bottom: 2px solid #d4af37;
+  border-bottom: 2px solid #ffffff;
 }
 
 .collection-description {
@@ -66,7 +66,7 @@
 
 .loading {
   text-align: center;
-  color: #d4af37;
+  color: #ffffff;
   font-size: 1.2rem;
   padding: 3rem;
 }

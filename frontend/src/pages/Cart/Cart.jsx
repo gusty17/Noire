@@ -49,7 +49,7 @@ function Cart() {
                     />
                     <div className="cart-item-details">
                       <h3 className="cart-item-title">{item.name}</h3>
-                      <p className="cart-item-price">${item.price}</p>
+                      <p className="cart-item-price">{item.price} LE</p>
                       <p className="cart-item-quantity">Quantity: {item.quantity}</p>
                       <button
                         className="cart-item-remove"
@@ -63,7 +63,7 @@ function Cart() {
               </div>
 
               <div className="cart-summary">
-                <h2 className="cart-total">Total: ${total.toFixed(2)}</h2>
+                <h2 className="cart-total">Total: {total.toFixed(2)} LE</h2>
                 <div className="cart-actions">
                   <button className="btn btn-primary" onClick={handleCheckout}>Checkout</button>
                   <button className="btn btn-secondary" onClick={handleContinueShopping}>Continue Shopping</button>

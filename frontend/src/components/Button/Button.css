@@ -13,28 +13,35 @@
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-primary {
-  background: #d4af37;
+  background: #ffffff;
   color: #000;
-  border: 2px solid #d4af37;
+  border: 2px solid #ffffff;
 }
 
 .btn-primary:hover {
-  background: #f0c674;
-  border-color: #f0c674;
+  background: #e0e0e0;
+  border-color: #e0e0e0;
 }
 
 .btn-secondary {
   background: transparent;
-  color: #d4af37;
-  border: 2px solid #d4af37;
+  color: #ffffff;
+  border: 2px solid #ffffff;
 }
 
 .btn-secondary:hover {
-  background: #d4af37;
+  background: #ffffff;
   color: #000;
 }
 

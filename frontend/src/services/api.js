@@ -130,8 +130,8 @@ export const clearCart = async () => {
 //  ORDERS
 
 
-export const createOrder = async () => {
-  const response = await apiClient.post("/order");
+export const createOrder = async (city) => {
+  const response = await apiClient.post("/order", { city });
   return response.data;
 };
 

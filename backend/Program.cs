@@ -10,7 +10,8 @@ using backend.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // JWT Config
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "my_super_secure_jwt_secret_key_that_is_long_enough_123456";
+var jwtKey = builder.Configuration["Jwt:Key"]
+    ?? throw new InvalidOperationException("Jwt:Key is not configured. Set it via 'dotnet user-secrets set \"Jwt:Key\" \"<value>\"' in development or an environment variable in production.");
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "NoireAPI";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "NoireUsers";
 

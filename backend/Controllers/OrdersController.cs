@@ -1,3 +1,4 @@
+using backend.DTOs.Order;
 using backend.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +20,13 @@ namespace backend.Controllers
 
         // POST: api/order (Checkout)
         [HttpPost]
-        public async Task<IActionResult> CreateOrder()
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto? dto)
         {
             try
             {
                 int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-                var order = await _service.CreateOrderAsync(userId);
+                var order = await _service.CreateOrderAsync(userId, dto?.City);
                 return Ok(order);
             }
             catch (Exception ex)

@@ -160,27 +160,7 @@ namespace backend.Services
 
                 if (dto.Image != null)
                 {
-                    try
-                    {
-                        var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
-
-                        if (!Directory.Exists(folderPath))
-                            Directory.CreateDirectory(folderPath);
-
-                        var fileName = Guid.NewGuid() + Path.GetExtension(dto.Image.FileName);
-                        var fullPath = Path.Combine(folderPath, fileName);
-
-                        using (var stream = new FileStream(fullPath, FileMode.Create))
-                        {
-                            await dto.Image.CopyToAsync(stream);
-                        }
-
-                        imagePath = $"/images/{fileName}";
-                    }
-                    catch (Exception fileEx)
-                    {
-                        throw new Exception($"Error uploading image: {fileEx.Message}");
-                    }
+                    imagePath = await SaveImageAsync(dto.Image);
                 }
 
                 var product = new Product
@@ -215,20 +195,7 @@ namespace backend.Services
 
             if (dto.Image != null)
             {
-                var folderPath = Path.Combine("wwwroot", "images");
-
-                if (!Directory.Exists(folderPath))
-                    Directory.CreateDirectory(folderPath);
-
-                var fileName = Guid.NewGuid() + Path.GetExtension(dto.Image.FileName);
-                var fullPath = Path.Combine(folderPath, fileName);
-
-                using (var stream = new FileStream(fullPath, FileMode.Create))
-                {
-                    await dto.Image.CopyToAsync(stream);
-                }
-
-                product.ImageUrl = $"/images/{fileName}";
+                product.ImageUrl = await SaveImageAsync(dto.Image);
             }
 
             product.Name = dto.Name;
@@ -252,6 +219,36 @@ namespace backend.Services
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        private static readonly HashSet<string> AllowedImageExtensions = new() { ".jpg", ".jpeg", ".png", ".webp" };
+        private static readonly HashSet<string> AllowedImageContentTypes = new() { "image/jpeg", "image/png", "image/webp" };
+        private const long MaxImageSizeBytes = 5 * 1024 * 1024; // 5 MB
+
+        private static async Task<string> SaveImageAsync(IFormFile image)
+        {
+            var extension = Path.GetExtension(image.FileName).ToLowerInvariant();
+
+            if (!AllowedImageExtensions.Contains(extension) || !AllowedImageContentTypes.Contains(image.ContentType))
+                throw new Exception("Invalid image type. Allowed types: jpg, jpeg, png, webp");
+
+            if (image.Length == 0 || image.Length > MaxImageSizeBytes)
+                throw new Exception("Image must be larger than 0 bytes and no more than 5 MB");
+
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            var fileName = Guid.NewGuid() + extension;
+            var fullPath = Path.Combine(folderPath, fileName);
+
+            using (var stream = new FileStream(fullPath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            return $"/images/{fileName}";
         }
     }
 }

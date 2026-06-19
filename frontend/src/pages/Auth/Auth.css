@@ -30,12 +30,12 @@
   border: none;
   cursor: pointer;
   background: transparent;
-  color: #d4af37;
+  color: #ffffff;
   border-bottom: 2px solid transparent;
 }
 
 .auth-tabs button.active {
-  border-bottom: 2px solid #d4af37;
+  border-bottom: 2px solid #ffffff;
   font-weight: bold;
 }
 
@@ -77,10 +77,10 @@
 
 /* SUCCESS */
 .success {
-  background: rgba(212, 175, 55, 0.1);
-  color: #d4af37;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
   padding: 10px;
-  border: 1px solid #d4af37;
+  border: 1px solid #ffffff;
   border-radius: 6px;
   margin-bottom: 15px;
   text-align: center;
@@ -93,13 +93,13 @@
 }
 
 .password-strength .valid {
-  color: #d4af37;
+  color: #ffffff;
 }
 
 /* BUTTON */
 .submit-btn {
   margin-top: 10px;
-  background: #d4af37;
+  background: #ffffff;
   color: black;
   border: none;
   padding: 10px;
@@ -109,7 +109,7 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #e5c158;
+  background: #e0e0e0;
 }
 
 .submit-btn:disabled {
@@ -118,7 +118,7 @@
   opacity: 0.6;
 }
 .password-strength .valid {
-  color: #d4af37;
+  color: #ffffff;
 }
 .password-strength .invalid {
   color: #ff4d4d;

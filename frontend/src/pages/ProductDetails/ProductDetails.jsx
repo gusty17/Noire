@@ -41,7 +41,11 @@ function ProductDetails() {
     ? `${BASE_URL}${product.imageUrl}`
     : "https://via.placeholder.com/400";
 
+  const inStock = product.stock > 0;
+
   const handleAddToCart = () => {
+    if (!inStock) return;
+
     addToCart({
       id: product.id,
       name: product.name,
@@ -74,13 +78,11 @@ function ProductDetails() {
         </div>
         <div className="product-info-section">
           <h1 className="product-title">{product.name}</h1>
-          <p className="product-price">${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}</p>
+          <p className="product-price">{typeof product.price === 'number' ? product.price.toFixed(2) : product.price} LE</p>
           <p className="product-description">{product.description}</p>
-          <div className="product-meta">
-            <p><strong>Stock:</strong> {product.stock} units available</p>
-            {product.brand && <p><strong>Brand:</strong> {product.brand?.name || 'N/A'}</p>}
-            {product.collection && <p><strong>Collection:</strong> {product.collection?.name || 'N/A'}</p>}
-          </div>
+          <p className={`stock-status ${inStock ? "in-stock" : "out-of-stock"}`}>
+            {inStock ? "In Stock" : "Out of Stock"}
+          </p>
           <div className="product-actions">
             {isAdmin ? (
               <>
@@ -89,7 +91,13 @@ function ProductDetails() {
               </>
             ) : (
               <>
-                <button className="btn btn-primary" onClick={handleAddToCart}>Add to Cart</button>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleAddToCart}
+                  disabled={!inStock}
+                >
+                  {inStock ? "Add to Cart" : "Out of Stock"}
+                </button>
                 <button className="btn btn-secondary">Add to Wishlist</button>
               </>
             )}

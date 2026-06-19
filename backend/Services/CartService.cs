@@ -39,14 +39,25 @@ namespace backend.Services
 
         public async Task AddToCartAsync(int userId, AddToCartDto dto)
         {
+            var product = await _context.Products.FindAsync(dto.ProductId);
+            if (product == null)
+                throw new Exception("Product not found");
+
+            if (product.Stock <= 0)
+                throw new Exception("Product is out of stock");
+
             var cart = await GetOrCreateCart(userId);
 
             var item = cart.Items
                 .FirstOrDefault(i => i.ProductId == dto.ProductId);
 
+            var requestedQuantity = (item?.Quantity ?? 0) + dto.Quantity;
+            if (requestedQuantity > product.Stock)
+                throw new Exception($"Only {product.Stock} unit(s) left in stock");
+
             if (item != null)
             {
-                item.Quantity += dto.Quantity;
+                item.Quantity = requestedQuantity;
             }
             else
             {

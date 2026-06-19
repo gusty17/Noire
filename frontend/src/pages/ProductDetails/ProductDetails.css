@@ -33,14 +33,14 @@
 
 .product-title {
   font-size: 2.5rem;
-  color: #d4af37;
+  color: #ffffff;
   font-weight: 600;
   margin-bottom: 1rem;
 }
 
 .product-price {
   font-size: 2rem;
-  color: #d4af37;
+  color: #ffffff;
   font-weight: 700;
   margin-bottom: 1.5rem;
 }
@@ -52,10 +52,26 @@
   margin-bottom: 2rem;
 }
 
+.stock-status {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.5rem;
+}
+
+.stock-status.in-stock {
+  color: #4caf50;
+}
+
+.stock-status.out-of-stock {
+  color: #ff4444;
+}
+
 .product-meta {
-  background: rgba(212, 175, 55, 0.05);
+  background: rgba(255, 255, 255, 0.05);
   padding: 1.5rem;
-  border-left: 3px solid #d4af37;
+  border-left: 3px solid #ffffff;
   border-radius: 4px;
   margin-bottom: 2rem;
 }
@@ -67,7 +83,7 @@
 }
 
 .product-meta strong {
-  color: #d4af37;
+  color: #ffffff;
 }
 
 .product-actions {
@@ -90,24 +106,24 @@
 }
 
 .btn-primary {
-  background: #d4af37;
+  background: #ffffff;
   color: #000;
 }
 
 .btn-primary:hover {
-  background: #f0c674;
+  background: #e0e0e0;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
 }
 
 .btn-secondary {
   background: transparent;
-  color: #d4af37;
-  border: 2px solid #d4af37;
+  color: #ffffff;
+  border: 2px solid #ffffff;
 }
 
 .btn-secondary:hover {
-  background: #d4af37;
+  background: #ffffff;
   color: #000;
 }
 
@@ -120,6 +136,13 @@
 .btn-danger:hover {
   background: #ff4444;
   color: #fff;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {

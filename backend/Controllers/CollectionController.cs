@@ -1,5 +1,6 @@
 using backend.DTOs.Collection;
 using backend.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -34,6 +35,7 @@ namespace backend.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CreateCollectionDto dto)
         {
             var collection = await _collectionService.CreateAsync(dto);
@@ -41,6 +43,7 @@ namespace backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, UpdateCollectionDto dto)
         {
             var result = await _collectionService.UpdateAsync(id, dto);
@@ -52,6 +55,7 @@ namespace backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _collectionService.DeleteAsync(id);

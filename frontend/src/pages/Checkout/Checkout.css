@@ -15,7 +15,7 @@
 }
 
 .checkout-header h1 {
-  color: #d4af37;
+  color: #ffffff;
   font-size: 2.5rem;
   font-weight: 600;
   margin: 0;
@@ -30,7 +30,7 @@
 }
 
 .checkout-empty h2 {
-  color: #d4af37;
+  color: #ffffff;
   font-size: 1.8rem;
   margin: 0 0 1rem 0;
 }
@@ -63,10 +63,10 @@
 }
 
 .order-summary-section h2 {
-  color: #d4af37;
+  color: #ffffff;
   font-size: 1.5rem;
   margin: 0 0 1.5rem 0;
-  border-bottom: 2px solid #d4af37;
+  border-bottom: 2px solid #ffffff;
   padding-bottom: 1rem;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .checkout-item:hover {
-  border-color: #d4af37;
+  border-color: #ffffff;
 }
 
 .checkout-item-image {
@@ -106,7 +106,7 @@
 
 .checkout-item-info h4 {
   margin: 0 0 0.5rem 0;
-  color: #d4af37;
+  color: #ffffff;
   font-size: 0.95rem;
   font-weight: 600;
 }
@@ -118,7 +118,7 @@
 }
 
 .checkout-item-total {
-  color: #d4af37;
+  color: #ffffff;
   font-weight: 600;
   font-size: 1rem;
   min-width: 80px;
@@ -149,11 +149,11 @@
   margin-top: 1rem;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #d4af37;
+  color: #ffffff;
 }
 
 .totals-row.total span:last-child {
-  color: #d4af37;
+  color: #ffffff;
   font-size: 1.2rem;
 }
 
@@ -166,10 +166,10 @@
 }
 
 .shipping-section h2 {
-  color: #d4af37;
+  color: #ffffff;
   font-size: 1.5rem;
   margin: 0 0 1.5rem 0;
-  border-bottom: 2px solid #d4af37;
+  border-bottom: 2px solid #ffffff;
   padding-bottom: 1rem;
 }
 
@@ -186,12 +186,13 @@
 }
 
 .form-group label {
-  color: #d4af37;
+  color: #ffffff;
   font-weight: 500;
   font-size: 0.95rem;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
   background: #0d0d0d;
   border: 1px solid #333;
   border-radius: 6px;
@@ -202,10 +203,26 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-group input:focus {
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f0f0f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 18px;
+  padding-right: 2.5rem;
+}
+
+.form-group select option {
+  background: #0d0d0d;
+  color: #f0f0f0;
+}
+
+.form-group input:focus,
+.form-group select:focus {
   outline: none;
-  border-color: #d4af37;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  border-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
 .form-group input:disabled {
@@ -256,7 +273,7 @@
 }
 
 .btn-place-order {
-  background: #d4af37;
+  background: #ffffff;
   color: #000;
   border: none;
   padding: 0.9rem 2rem;
@@ -270,9 +287,9 @@
 }
 
 .btn-place-order:hover:not(:disabled) {
-  background: #e8c547;
+  background: #f2f2f2;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
 }
 
 .btn-place-order:disabled {
@@ -294,7 +311,7 @@
 .success-icon {
   width: 80px;
   height: 80px;
-  background: #d4af37;
+  background: #ffffff;
   color: #000;
   border-radius: 50%;
   display: flex;
@@ -321,7 +338,7 @@
 }
 
 .order-success h2 {
-  color: #d4af37;
+  color: #ffffff;
   font-size: 1.8rem;
   margin: 0 0 1rem 0;
 }

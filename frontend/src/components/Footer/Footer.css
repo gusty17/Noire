@@ -2,7 +2,7 @@
   background: #000;
   color: #f0f0f0;
   padding: 50px 20px;
-  border-top: 1px solid #d4af37;
+  border-top: 1px solid #ffffff;
 }
 
 /* CENTER THE CONTENT */
@@ -22,7 +22,7 @@
 
 .footer-section h3 {
   margin-bottom: 15px;
-  color: #d4af37;
+  color: #ffffff;
   font-weight: 600;
   font-size: 1.1rem;
 }
@@ -34,7 +34,7 @@
 }
 
 .footer-section a:hover {
-  color: #d4af37;
+  color: #ffffff;
 }
 
 .copyright {

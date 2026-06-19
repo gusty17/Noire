@@ -5,12 +5,13 @@ import { deleteProduct, addToCart as addToBackendCart } from "../../services/api
 import "./ProductCard.css";
 import Button from "../Button/Button";
 
-function ProductCard({ id, name, price, imageUrl, image, onProductDeleted }) {
+function ProductCard({ id, name, price, imageUrl, image, stock, onProductDeleted }) {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { isLoggedIn, isAdmin } = useAuth();
 
   const BASE_URL = "http://localhost:5000";
+  const inStock = stock > 0;
 
   const goToDetails = () => {
     navigate(`/product/${id}`);
@@ -23,6 +24,8 @@ function ProductCard({ id, name, price, imageUrl, image, onProductDeleted }) {
       navigate("/login");
       return;
     }
+
+    if (!inStock) return;
 
     try {
       // Add to frontend cart
@@ -76,8 +79,10 @@ function ProductCard({ id, name, price, imageUrl, image, onProductDeleted }) {
       <div className="product-info">
         <h3>{name}</h3>
         <p>
-          $
-          {typeof price === "number" ? price.toFixed(2) : price}
+          {typeof price === "number" ? price.toFixed(2) : price} LE
+        </p>
+        <p className={`stock-status ${inStock ? "in-stock" : "out-of-stock"}`}>
+          {inStock ? "In Stock" : "Out of Stock"}
         </p>
       </div>
 
@@ -90,12 +95,16 @@ function ProductCard({ id, name, price, imageUrl, image, onProductDeleted }) {
             Delete
           </Button>
         </div>
+      ) : !inStock ? (
+        <Button variant="secondary" disabled>
+          Out of Stock
+        </Button>
       ) : (
-        <Button 
-          variant={isLoggedIn ? "primary" : "secondary"} 
+        <Button
+          variant={isLoggedIn ? "primary" : "secondary"}
           onClick={handleAddToCart}
         >
-          {isLoggedIn ? "Add to Cart" : "Sign in to Add"}
+          {isLoggedIn ? "Add to Cart" : "Sign in to Buy"}
         </Button>
       )}
     </div>
