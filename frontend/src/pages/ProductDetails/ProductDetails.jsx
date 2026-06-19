@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
-import { getProductById, deleteProduct } from "../../services/api";
+import { getProductById, deleteProduct, API_ROOT } from "../../services/api";
 import "./ProductDetails.css";
 
 function ProductDetails() {
@@ -13,8 +13,6 @@ function ProductDetails() {
   const [error, setError] = useState(null);
   const { addToCart } = useCart();
   const { isLoggedIn, isAdmin } = useAuth();
-
-  const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -38,7 +36,7 @@ function ProductDetails() {
   if (!product) return <p className="error">Product not found.</p>;
 
   const displayImage = product.imageUrl
-    ? `${BASE_URL}${product.imageUrl}`
+    ? `${API_ROOT}${product.imageUrl}`
     : "https://via.placeholder.com/400";
 
   const inStock = product.stock > 0;

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
-import { deleteProduct, addToCart as addToBackendCart } from "../../services/api";
+import { deleteProduct, addToCart as addToBackendCart, API_ROOT } from "../../services/api";
 import "./ProductCard.css";
 import Button from "../Button/Button";
 
@@ -10,7 +10,6 @@ function ProductCard({ id, name, price, imageUrl, image, stock, onProductDeleted
   const { addToCart } = useCart();
   const { isLoggedIn, isAdmin } = useAuth();
 
-  const BASE_URL = "http://localhost:5000";
   const inStock = stock > 0;
 
   const goToDetails = () => {
@@ -69,7 +68,7 @@ function ProductCard({ id, name, price, imageUrl, image, stock, onProductDeleted
 
   // 🔥 FIXED IMAGE URL
   const displayImage = imageUrl
-    ? `${BASE_URL}${imageUrl}`
+    ? `${API_ROOT}${imageUrl}`
     : image || "https://via.placeholder.com/200";
 
   return (

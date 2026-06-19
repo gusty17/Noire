@@ -1,10 +1,12 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api";
+// Root URL of the backend (no trailing slash), used for both the API
+// and for resolving image paths returned by the API (e.g. /images/x.jpg).
+export const API_ROOT = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 // Create axios instance
 const apiClient = axios.create({
-  baseURL: BASE_URL,
+  baseURL: `${API_ROOT}/api`,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

@@ -1,4 +1,5 @@
 import { useProductForm } from "../hooks/useProductForm";
+import { API_ROOT } from "../../../services/api";
 
 function ProductForm() {
   const {
@@ -131,7 +132,7 @@ function ProductForm() {
                 Current image:
               </p>
               <img
-                src={`http://localhost:5000${currentImageUrl}`}
+                src={`${API_ROOT}${currentImageUrl}`}
                 alt="Current product"
                 style={{
                   maxWidth: "150px",
