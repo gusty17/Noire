@@ -7,6 +7,10 @@ using backend.Data;
 using backend.Services;
 using backend.Interfaces;
 
+// Loads backend/.env (if present) into process environment variables, so the
+// ASP.NET Core environment-variable config provider below picks them up.
+DotNetEnv.Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // JWT Config
