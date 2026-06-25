@@ -2,10 +2,13 @@ import "./FeaturedProducts.css";
 import { useEffect, useState } from "react";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { getProducts } from "../../services/api";
+import { useScrollReveal } from "../../hooks/useScrollReveal";
 
 function FeaturedProducts({ searchQuery = "" }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const headerRef = useScrollReveal();
+  const gridRef = useScrollReveal({ stagger: 0.08 });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -41,12 +44,12 @@ function FeaturedProducts({ searchQuery = "" }) {
 
   return (
     <section className="featured">
-      <div className="featured-header">
+      <div className="featured-header" ref={headerRef}>
         <h2>Featured Products</h2>
         <p>Explore our curated selection of premium fragrances</p>
       </div>
 
-      <div className="grid">
+      <div className="grid" ref={gridRef}>
         {products.length > 0 ? (
           products.map((p) => (
             <ProductCard

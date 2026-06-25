@@ -2,10 +2,13 @@ import "./Collections.css";
 import { useState, useEffect } from "react";
 import { getCollections } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { useScrollReveal } from "../../hooks/useScrollReveal";
 function Collections() {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const headerRef = useScrollReveal();
+  const gridRef = useScrollReveal({ stagger: 0.08 });
 
   useEffect(() => {
     const fetchCollections = async () => {
@@ -31,12 +34,12 @@ function Collections() {
 
   return (
     <section className="collections">
-      <div className="collections-header">
+      <div className="collections-header" ref={headerRef}>
         <h2>Collections</h2>
         <p>Explore our collections.</p>
       </div>
 
-      <div className="collection-grid">
+      <div className="collection-grid" ref={gridRef}>
         {collections.length > 0 ? (
           collections.map((item) => (
             <button

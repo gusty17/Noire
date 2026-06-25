@@ -7,16 +7,16 @@
 }
 
 .collections-header {
-  margin-bottom: 20px;
+  margin-bottom: 35px;
   text-align: center;
 }
 
 .collections-header h2 {
   margin: 0;
-  font-size: 2.2rem;
+  font-size: 2.8rem;
   letter-spacing: 0.04em;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .collections-header p {

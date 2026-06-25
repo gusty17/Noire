@@ -2,11 +2,14 @@ import "./Brands.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getBrands } from "../../services/api";
+import { useScrollReveal } from "../../hooks/useScrollReveal";
 
 function Brands() {
   const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const headerRef = useScrollReveal();
+  const gridRef = useScrollReveal({ stagger: 0.08 });
 
   useEffect(() => {
     const fetchBrands = async () => {
@@ -33,12 +36,12 @@ function Brands() {
 
   return (
     <section className="brands">
-      <div className="brands-header">
+      <div className="brands-header" ref={headerRef}>
         <h2>Premium Brands</h2>
         <p>Explore our curated brands for every style.</p>
       </div>
 
-      <div className="brand-grid">
+      <div className="brand-grid" ref={gridRef}>
         {brands.length > 0 ? (
           brands.map((brand) => (
             <button
