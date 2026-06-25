@@ -5,6 +5,7 @@ import AdminTabs from "./components/AdminTabs";
 import ProductForm from "./components/ProductForm";
 import CollectionForm from "./components/CollectionForm";
 import BrandForm from "./components/BrandForm";
+import FeaturedItemsManager from "./components/FeaturedItemsManager";
 import OrdersTable from "./components/OrdersTable";
 import "./Admin.css";
 
@@ -48,6 +49,7 @@ function Admin() {
         {activeTab === "product" && <ProductForm />}
         {activeTab === "collection" && <CollectionForm />}
         {activeTab === "brand" && <BrandForm />}
+        {activeTab === "featured" && <FeaturedItemsManager />}
         {activeTab === "orders" && <OrdersTable />}
       </div>
     </div>

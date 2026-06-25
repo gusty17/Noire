@@ -34,7 +34,7 @@ function Footer() {
         <div className="footer-section">
           <h3>Support</h3>
           <a>Email: support@noire.com</a>
-          <a>Phone: +20 123 456 7890</a>
+          <a>Phone: +20 1012660158</a>
           <a>Shipping Available Across Egypt</a>  
         </div>
 

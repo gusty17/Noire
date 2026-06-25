@@ -2,6 +2,7 @@ const TABS = [
   { id: "product", label: "Add Product" },
   { id: "collection", label: "Add Collection" },
   { id: "brand", label: "Add Brand" },
+  { id: "featured", label: "Featured" },
   { id: "orders", label: "Orders" },
 ];
 

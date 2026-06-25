@@ -21,7 +21,8 @@ namespace backend.Services
                 .Select(c => new CollectionDto
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = c.Name,
+                    IsFeatured = c.IsFeatured
                 })
                 .ToListAsync();
         }
@@ -35,7 +36,8 @@ namespace backend.Services
             return new CollectionDto
             {
                 Id = collection.Id,
-                Name = collection.Name
+                Name = collection.Name,
+                IsFeatured = collection.IsFeatured
             };
         }
 
@@ -52,7 +54,8 @@ namespace backend.Services
             return new CollectionDto
             {
                 Id = collection.Id,
-                Name = collection.Name
+                Name = collection.Name,
+                IsFeatured = collection.IsFeatured
             };
         }
 
@@ -75,6 +78,18 @@ namespace backend.Services
             if (collection == null) return false;
 
             _context.Collections.Remove(collection);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> SetFeaturedAsync(int id, bool isFeatured)
+        {
+            var collection = await _context.Collections.FindAsync(id);
+
+            if (collection == null) return false;
+
+            collection.IsFeatured = isFeatured;
             await _context.SaveChangesAsync();
 
             return true;

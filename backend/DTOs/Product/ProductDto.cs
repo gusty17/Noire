@@ -12,6 +12,8 @@ namespace backend.DTOs.Product
 
         public string? ImageUrl { get; set; }
 
+        public bool IsFeatured { get; set; }
+
         public int BrandId { get; set; }
         public string? BrandName { get; set; }
         

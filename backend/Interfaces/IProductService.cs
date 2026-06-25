@@ -14,5 +14,6 @@ namespace backend.Interfaces
         Task<ProductDto> CreateAsync(CreateProductDto dto);
         Task<bool> UpdateAsync(int id, UpdateProductDto dto);
         Task<bool> DeleteAsync(int id);
+        Task<bool> SetFeaturedAsync(int id, bool isFeatured);
     }
 }

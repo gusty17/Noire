@@ -14,8 +14,11 @@ function Brands() {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const data = await getBrands();
-        setBrands(data);
+        const result = await getBrands();
+        const data = Array.isArray(result) ? result : [];
+        const featured = data.filter((item) => item.isFeatured);
+        const rest = data.filter((item) => !item.isFeatured);
+        setBrands([...featured, ...rest].slice(0, 4));
       } catch (error) {
         console.error("Error fetching brands:", error);
       } finally {

@@ -65,5 +65,17 @@ namespace backend.Controllers
 
             return NoContent();
         }
+
+        [HttpPatch("{id}/featured")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SetFeatured(int id, [FromBody] SetFeaturedDto dto)
+        {
+            var result = await _brandService.SetFeaturedAsync(id, dto.IsFeatured);
+
+            if (!result)
+                return NotFound();
+
+            return NoContent();
+        }
     }
 }

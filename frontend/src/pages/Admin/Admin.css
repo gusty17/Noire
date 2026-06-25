@@ -68,6 +68,76 @@
   letter-spacing: 1px;
 }
 
+.featured-help {
+  color: #999;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.featured-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+@media (max-width: 900px) {
+  .featured-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.featured-list h3 {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.featured-count {
+  color: #999;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.featured-checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.featured-checklist li {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 10px 14px;
+}
+
+.featured-checklist label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f0f0f0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.featured-checklist label.disabled {
+  color: #666;
+  cursor: not-allowed;
+}
+
+.featured-checklist input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #ffffff;
+}
+
 .error-alert {
   background: #f8d7da;
   border: 1px solid #f5c6cb;

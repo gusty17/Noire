@@ -9,5 +9,6 @@ namespace backend.Interfaces
         Task<BrandDto> CreateAsync(CreateBrandDto dto);
         Task<bool> UpdateAsync(int id, UpdateBrandDto dto);
         Task<bool> DeleteAsync(int id);
+        Task<bool> SetFeaturedAsync(int id, bool isFeatured);
     }
 }

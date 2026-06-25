@@ -223,6 +223,18 @@ export const deleteProduct = async (id) => {
   await apiClient.delete(`/product/${id}`);
 };
 
+export const setProductFeatured = async (id, isFeatured) => {
+  await apiClient.patch(`/product/${id}/featured`, { isFeatured });
+};
+
+export const setBrandFeatured = async (id, isFeatured) => {
+  await apiClient.patch(`/brand/${id}/featured`, { isFeatured });
+};
+
+export const setCollectionFeatured = async (id, isFeatured) => {
+  await apiClient.patch(`/collection/${id}/featured`, { isFeatured });
+};
+
 export const updateOrderStatus = async (orderId, status) => {
   const response = await apiClient.put(`/order/${orderId}/status`, { status });
   return response.data;

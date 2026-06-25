@@ -12,6 +12,8 @@ namespace backend.Models
 
         public string? ImageUrl { get; set; }
 
+        public bool IsFeatured { get; set; }
+
         // Relations
         public int BrandId { get; set; }
         public Brand? Brand { get; set; }

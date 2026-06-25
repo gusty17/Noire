@@ -33,6 +33,7 @@ namespace backend.Services
                     Price = p.Price,
                     Stock = p.Stock,
                     ImageUrl = p.ImageUrl ?? "",
+                    IsFeatured = p.IsFeatured,
                     BrandId = p.BrandId,
                     BrandName = p.Brand != null ? p.Brand.Name : "",
                     CollectionId = p.CollectionId,
@@ -58,6 +59,7 @@ namespace backend.Services
                 Price = p.Price,
                 Stock = p.Stock,
                 ImageUrl = p.ImageUrl ?? "",
+                IsFeatured = p.IsFeatured,
                 BrandId = p.BrandId,
                 BrandName = p.Brand != null ? p.Brand.Name : "",
                 CollectionId = p.CollectionId,
@@ -79,6 +81,7 @@ namespace backend.Services
                     Price = p.Price,
                     Stock = p.Stock,
                     ImageUrl = p.ImageUrl ?? "",
+                    IsFeatured = p.IsFeatured,
                     BrandId = p.BrandId,
                     BrandName = p.Brand != null ? p.Brand.Name : "",
                     CollectionId = p.CollectionId,
@@ -101,6 +104,7 @@ namespace backend.Services
                     Price = p.Price,
                     Stock = p.Stock,
                     ImageUrl = p.ImageUrl ?? "",
+                    IsFeatured = p.IsFeatured,
                     BrandId = p.BrandId,
                     BrandName = p.Brand != null ? p.Brand.Name : "",
                     CollectionId = p.CollectionId,
@@ -130,6 +134,7 @@ namespace backend.Services
                     Price = p.Price,
                     Stock = p.Stock,
                     ImageUrl = p.ImageUrl ?? "",
+                    IsFeatured = p.IsFeatured,
                     BrandId = p.BrandId,
                     BrandName = p.Brand != null ? p.Brand.Name : "",
                     CollectionId = p.CollectionId,
@@ -216,6 +221,18 @@ namespace backend.Services
             if (product == null) return false;
 
             _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> SetFeaturedAsync(int id, bool isFeatured)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null) return false;
+
+            product.IsFeatured = isFeatured;
             await _context.SaveChangesAsync();
 
             return true;

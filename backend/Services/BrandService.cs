@@ -21,7 +21,8 @@ namespace backend.Services
                 .Select(b => new BrandDto
                 {
                     Id = b.Id,
-                    Name = b.Name
+                    Name = b.Name,
+                    IsFeatured = b.IsFeatured
                 })
                 .ToListAsync();
         }
@@ -35,7 +36,8 @@ namespace backend.Services
             return new BrandDto
             {
                 Id = brand.Id,
-                Name = brand.Name
+                Name = brand.Name,
+                IsFeatured = brand.IsFeatured
             };
         }
 
@@ -52,7 +54,8 @@ namespace backend.Services
             return new BrandDto
             {
                 Id = brand.Id,
-                Name = brand.Name
+                Name = brand.Name,
+                IsFeatured = brand.IsFeatured
             };
         }
 
@@ -78,6 +81,19 @@ namespace backend.Services
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<bool> SetFeaturedAsync(int id, bool isFeatured)
+        {
+            var brand = await _context.Brands.FindAsync(id);
+
+            if (brand == null) return false;
+
+            brand.IsFeatured = isFeatured;
+            await _context.SaveChangesAsync();
+
+            return true;
+            
         }
     }
 }

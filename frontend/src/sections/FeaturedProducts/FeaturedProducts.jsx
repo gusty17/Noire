@@ -14,9 +14,13 @@ function FeaturedProducts({ searchQuery = "" }) {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const data = await getProducts(searchQuery);
-        // Show only first 8 products as featured
-        setProducts(Array.isArray(data) ? data.slice(0, 8) : []);
+        const result = await getProducts(searchQuery);
+        const data = Array.isArray(result) ? result : [];
+        // Prefer admin-curated featured products; fill any remaining slots
+        // (up to 4) with non-featured ones so the section is never empty.
+        const featured = data.filter((item) => item.isFeatured);
+        const rest = data.filter((item) => !item.isFeatured);
+        setProducts([...featured, ...rest].slice(0, 4));
       } catch (error) {
         console.error("Error fetching products:", error);
         setProducts([]);
