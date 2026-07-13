@@ -49,31 +49,29 @@ function CollectionsPage() {
       </header>
 
       <section className="collections-container">
-        {collections.length > 0 ? (
-          collections.map((collection) => {
-            const collectionProducts = getProductsByCollection(collection.id);
-            return (
-              <div key={collection.id} className="collection-section">
-                <h2 className="collection-title">{collection.name}</h2>
-                {collection.description && (
-                  <p className="collection-description">{collection.description}</p>
-                )}
-                <div className="products-grid">
-                  {collectionProducts.length > 0 ? (
-                    collectionProducts.map((product) => (
+        {collections.filter((c) => getProductsByCollection(c.id).length > 0).length > 0 ? (
+          collections
+            .filter((c) => getProductsByCollection(c.id).length > 0)
+            .map((collection) => {
+              const collectionProducts = getProductsByCollection(collection.id);
+              return (
+                <div key={collection.id} className="collection-section">
+                  <h2 className="collection-title">{collection.name}</h2>
+                  {collection.description && (
+                    <p className="collection-description">{collection.description}</p>
+                  )}
+                  <div className="products-grid">
+                    {collectionProducts.map((product) => (
                       <ProductCard
                         key={product.id}
                         {...product}
                         onAddToCart={() => console.log("Added:", product)}
                       />
-                    ))
-                  ) : (
-                    <p className="no-products">No products in this collection.</p>
-                  )}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })
+              );
+            })
         ) : (
           <p className="no-collections">No collections available.</p>
         )}

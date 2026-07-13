@@ -8,7 +8,7 @@ import "./Navbar.css";
 function Navbar() {
   const navigate = useNavigate();
   const { cartItems , cartCount } = useCart();
-  const { isLoggedIn , isAdmin} = useAuth();
+  const { isLoggedIn, isAdmin, logout } = useAuth();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -31,9 +31,8 @@ function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userName");
-    window.location.reload();
+    logout();
+    navigate("/");
   };
 
   const handleSearchSubmit = (e) => {
@@ -74,7 +73,9 @@ function Navbar() {
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
           />
-          <button type="submit">🔍</button>
+          <button type="submit" aria-label="Search">
+            <FaSearch />
+          </button>
         </form>
 
         {/* CART */}

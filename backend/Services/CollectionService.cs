@@ -22,7 +22,8 @@ namespace backend.Services
                 {
                     Id = c.Id,
                     Name = c.Name,
-                    IsFeatured = c.IsFeatured
+                    IsFeatured = c.IsFeatured,
+                    ProductCount = c.Products.Count()
                 })
                 .ToListAsync();
         }

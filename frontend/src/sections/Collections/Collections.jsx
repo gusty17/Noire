@@ -14,7 +14,9 @@ function Collections() {
     const fetchCollections = async () => {
       try {
         const result = await getCollections();
-        const data = Array.isArray(result) ? result : [];
+        const data = (Array.isArray(result) ? result : []).filter(
+          (item) => item.productCount == null || item.productCount > 0
+        );
         const featured = data.filter((item) => item.isFeatured);
         const rest = data.filter((item) => !item.isFeatured);
         setCollections([...featured, ...rest].slice(0, 4));

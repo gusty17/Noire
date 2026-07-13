@@ -15,7 +15,9 @@ function Brands() {
     const fetchBrands = async () => {
       try {
         const result = await getBrands();
-        const data = Array.isArray(result) ? result : [];
+        const data = (Array.isArray(result) ? result : []).filter(
+          (item) => item.productCount == null || item.productCount > 0
+        );
         const featured = data.filter((item) => item.isFeatured);
         const rest = data.filter((item) => !item.isFeatured);
         setBrands([...featured, ...rest].slice(0, 4));
