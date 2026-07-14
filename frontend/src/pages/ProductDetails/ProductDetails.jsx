@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
-import { getProductById, deleteProduct, API_ROOT } from "../../services/api";
+import { getProductById, deleteProduct, addToCart as addToBackendCart, API_ROOT } from "../../services/api";
 import "./ProductDetails.css";
 
 function ProductDetails() {
@@ -41,15 +41,27 @@ function ProductDetails() {
 
   const inStock = product.stock > 0;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+
     if (!inStock) return;
 
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: displayImage,
-    }, isLoggedIn);
+    try {
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: displayImage,
+      }, isLoggedIn);
+
+      await addToBackendCart(product.id, 1);
+    } catch (err) {
+      console.error("Error adding to cart:", err);
+      alert("Failed to add item to cart");
+    }
   };
 
   const handleUpdate = () => {
@@ -87,17 +99,18 @@ function ProductDetails() {
                 <button className="btn btn-secondary" onClick={handleUpdate}>Update Product</button>
                 <button className="btn btn-danger" onClick={handleDelete}>Delete Product</button>
               </>
+            ) : !inStock ? (
+              <button className="btn btn-primary" disabled>
+                Out of Stock
+              </button>
+            ) : isLoggedIn ? (
+              <button className="btn btn-primary" onClick={handleAddToCart}>
+                Add to Cart
+              </button>
             ) : (
-              <>
-                <button
-                  className="btn btn-primary"
-                  onClick={handleAddToCart}
-                  disabled={!inStock}
-                >
-                  {inStock ? "Add to Cart" : "Out of Stock"}
-                </button>
-                <button className="btn btn-secondary">Add to Wishlist</button>
-              </>
+              <button className="btn btn-secondary" onClick={() => navigate("/login")}>
+                Sign in to Buy
+              </button>
             )}
           </div>
         </div>
