@@ -7,9 +7,10 @@ using backend.Data;
 using backend.Services;
 using backend.Interfaces;
 
-// Loads backend/.env (if present) into process environment variables, so the
-// ASP.NET Core environment-variable config provider below picks them up.
-DotNetEnv.Env.Load();
+// Loads backend/.env into process environment variables for local development.
+// On Render (and other cloud hosts) the file won't exist — env vars are injected
+// directly by the platform, so this is safely skipped.
+if (File.Exists(".env")) DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
