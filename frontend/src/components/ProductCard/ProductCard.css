@@ -5,7 +5,9 @@
   text-align: center;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   border-radius: 8px;
-  width: 250px;
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto;
   min-height: 380px;
   display: flex;
   flex-direction: column;
@@ -87,7 +89,7 @@
 
 @media (max-width: 1200px) {
   .product-card {
-    width: 250px;
+    max-width: 250px;
     min-height: 350px;
   }
 
@@ -98,7 +100,7 @@
 
 @media (max-width: 992px) {
   .product-card {
-    width: 220px;
+    max-width: 220px;
     min-height: 320px;
   }
 
@@ -107,24 +109,76 @@
   }
 }
 
+/* On tablets/phones the card fills its (now 2-column) grid cell */
 @media (max-width: 768px) {
   .product-card {
-    width: 200px;
+    max-width: 100%;
     min-height: 300px;
+    padding: 16px;
   }
 
   .product-card img {
-    height: 140px;
+    height: 160px;
   }
 }
 
 @media (max-width: 576px) {
   .product-card {
-    width: 280px;
-    min-height: 380px;
+    min-height: 250px;
+    padding: 12px;
+    border-radius: 6px;
   }
 
   .product-card img {
-    height: 200px;
+    height: 130px;
+    margin-bottom: 10px;
+  }
+
+  .product-info {
+    margin: 8px 0;
+  }
+
+  .product-info h3 {
+    font-size: 0.9rem;
+    min-height: 2.2rem;
+    margin: 3px 0;
+  }
+
+  .product-info p {
+    font-size: 0.95rem;
+    margin: 4px 0;
+  }
+
+  .product-info .stock-status {
+    font-size: 0.7rem;
+  }
+
+  .product-card button {
+    font-size: 0.8rem;
+    padding: 8px 6px;
+  }
+
+  .admin-actions {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 400px) {
+  .product-card {
+    min-height: 225px;
+    padding: 10px;
+  }
+
+  .product-card img {
+    height: 110px;
+  }
+
+  .product-info h3 {
+    font-size: 0.8rem;
+    min-height: 2rem;
+  }
+
+  .product-info p {
+    font-size: 0.85rem;
   }
 }
