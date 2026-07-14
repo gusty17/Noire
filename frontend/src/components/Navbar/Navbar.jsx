@@ -115,18 +115,11 @@ function Navbar() {
       {menuOpen && (
         <div className="mobile-menu">
           <button onClick={() => handleNavigation("/")}>Home</button>
+          <button onClick={() => handleNavigation("/products")}>Products</button>
           <button onClick={() => handleNavigation("/collections")}>
             Collections
           </button>
           <button onClick={() => handleNavigation("/brands")}>Brands</button>
-
-          {isLoggedIn ? (
-            <button onClick={handleLogout}>Logout</button>
-          ) : (
-            <button onClick={() => handleNavigation("/login")}>
-              Sign In
-            </button>
-          )}
         </div>
       )}
     </nav>
