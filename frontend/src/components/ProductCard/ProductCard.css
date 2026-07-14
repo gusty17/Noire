@@ -124,6 +124,7 @@
 
 @media (max-width: 576px) {
   .product-card {
+    max-width: 170px;
     min-height: 250px;
     padding: 12px;
     border-radius: 6px;
@@ -165,6 +166,7 @@
 
 @media (max-width: 400px) {
   .product-card {
+    max-width: 150px;
     min-height: 225px;
     padding: 10px;
   }

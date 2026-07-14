@@ -53,7 +53,7 @@
 
 @media (max-width: 576px) {
   .search-results {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 1.25rem;
     padding: 0.5rem;
     justify-content: center;
