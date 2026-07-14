@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
-import { FaShoppingCart, FaSearch, FaUser, FaCog } from "react-icons/fa";
+import { FiShoppingBag, FiSearch, FiSettings, FiMenu, FiX } from "react-icons/fi";
 import "./Navbar.css";
 
 function Navbar() {
@@ -12,6 +12,7 @@ function Navbar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [scrolled, setScrolled] = useState(false);
 
   // Close mobile menu when screen size changes
   useEffect(() => {
@@ -23,6 +24,14 @@ function Navbar() {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Add a subtle condensed style once the user scrolls away from the top
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleNavigation = (path) => {
@@ -44,11 +53,11 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       {/* LEFT */}
       <div className="nav-left">
-         <button className="menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
-            ☰
+         <button className="menu-btn" aria-label="Menu" onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? <FiX /> : <FiMenu />}
           </button>
         <button onClick={() => navigate("/")}>HOME</button>
         <button onClick={() => navigate("/products")}>PRODUCTS</button>
@@ -74,24 +83,26 @@ function Navbar() {
             onChange={(e) => setSearchInput(e.target.value)}
           />
           <button type="submit" aria-label="Search">
-            <FaSearch />
+            <FiSearch />
           </button>
         </form>
 
         {/* CART */}
-        <div
+        <button
+          type="button"
           className="cart-icon-container"
+          aria-label="Cart"
           onClick={() => navigate("/cart")}
         >
-          <span className="icon">🛒</span>
+          <FiShoppingBag className="icon" />
           {cartCount  > 0 && (
             <span className="cart-badge">{cartCount}</span>
           )}
-        </div>
+        </button>
         
         {isAdmin && (
           <button className="admin-btn" onClick={() => navigate("/admin")}>
-            <FaCog /> Admin
+            <FiSettings /> Admin
           </button>
         )}
 

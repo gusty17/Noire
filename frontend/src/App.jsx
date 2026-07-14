@@ -48,10 +48,34 @@ function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [pathname]);
 
   return null;
+}
+
+// Wraps the routed page and replays a subtle fade/slide on every navigation.
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <div key={location.pathname} className="page-transition">
+      <Routes location={location}>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/brands" element={<Brands />} />
+        <Route path="/collections" element={<CollectionsPage />} />
+        <Route path="/new-arrivals" element={<NewArrival />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/admin" element={<Admin />} />
+      </Routes>
+    </div>
+  );
 }
 
 function App() {
@@ -62,20 +86,7 @@ function App() {
         <BrowserRouter>
           <ScrollToTop />
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/brands" element={<Brands />} />
-            <Route path="/collections" element={<CollectionsPage />} />
-            <Route path="/new-arrivals" element={<NewArrival />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/admin" element={<Admin />} />
-          </Routes>
+          <AnimatedRoutes />
           <Footer />
         </BrowserRouter>
       </CartProvider>

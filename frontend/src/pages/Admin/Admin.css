@@ -185,7 +185,7 @@
   border: 1px solid #333;
   color: #ccc;
   border-radius: 4px;
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-body);
   transition: border-color 0.3s ease;
   font-size: 14px;
 }
